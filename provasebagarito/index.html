@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdTech Concursos | Caderno de Questões Inteligente & Ciclo de Simulados</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ==================== HEADER DA PLATAFORMA ==================== -->
+  <header id="app-header" class="glass-header sticky top-0 z-40 px-4 lg:px-8 py-3.5 hidden">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Logo e Info do Edital -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+          <i data-lucide="brain-circuit" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-2">
+            EdTech Concursos
+            <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">SaaS v2.0</span>
+          </h1>
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="header-edital-info">Edital: Assistente Administrativo (478 Questões)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegação Principal -->
+      <nav class="hidden md:flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+        <button onclick="router.navigate('caderno')" id="nav-btn-caderno" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Caderno de Questões</span>
+        </button>
+
+        <button onclick="router.navigate('desempenho')" id="nav-btn-desempenho" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
+          <span>Meu Desempenho</span>
+        </button>
+
+        <button onclick="router.navigate('simulados')" id="nav-btn-simulados" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="timer" class="w-4 h-4 text-amber-400"></i>
+          <span>Ciclo de Simulados</span>
+        </button>
+
+        <button onclick="router.navigate('erros')" id="nav-btn-erros" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+          <span>Caderno de Erros</span>
+          <span id="badge-erros-count" class="hidden px-1.5 py-0.2 text-[10px] bg-rose-500/20 text-rose-300 rounded-full font-bold">0</span>
+        </button>
+
+        <button onclick="router.navigate('raio-x')" id="nav-btn-raio-x" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="activity" class="w-4 h-4 text-sky-400"></i>
+          <span>Raio-X do Edital</span>
+        </button>
+
+        <button onclick="router.navigate('fora-edital')" id="nav-btn-fora-edital" class="nav-btn px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all-fast text-slate-300 hover:text-white hover:bg-slate-800">
+          <i data-lucide="filter-x" class="w-4 h-4 text-orange-400"></i>
+          <span>Fora do Edital</span>
+        </button>
+
+        <button onclick="router.navigate('admin')" id="nav-btn-admin" class="nav-btn hidden px-3.5 py-1.5 rounded-xl text-xs font-medium items-center gap-2 transition-all-fast text-amber-300 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>Painel Admin</span>
+        </button>
+      </nav>
+
+      <!-- Usuário e Logout -->
+      <div class="flex items-center gap-3">
+        <div class="text-right hidden sm:block">
+          <p id="header-user-name" class="text-xs font-semibold text-slate-200">Aluno</p>
+          <span id="header-user-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-medium">Ativo</span>
+        </div>
+        <button onclick="auth.logout()" title="Sair da Plataforma" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20 transition-all-fast">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== CONTEÚDO PRINCIPAL (SPA) ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+
+    <!-- 1. TELA DE LOGIN -->
+    <section id="view-login" class="min-h-[75vh] flex items-center justify-center p-4">
+      <div class="w-full max-w-md glass-card p-8 rounded-3xl shadow-2xl border border-slate-800">
+        <div class="text-center mb-8">
+          <div class="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 items-center justify-center shadow-xl shadow-indigo-500/30 mb-4">
+            <i data-lucide="lock" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-2xl font-bold tracking-tight text-white">Entrar na Plataforma</h2>
+          <p class="text-xs text-slate-400 mt-1.5">Acesso exclusivo para concurseiros autorizados</p>
+        </div>
+
+        <form id="form-login" onsubmit="auth.handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">E-mail</label>
+            <div class="relative">
+              <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+              <input type="email" id="login-email" required placeholder="seu@email.com" class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all-fast">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Senha</label>
+            <div class="relative">
+              <i data-lucide="key-round" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+              <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all-fast">
+            </div>
+          </div>
+
+          <div id="login-error-msg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-3 rounded-xl flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+            <span id="login-error-text">Credenciais inválidas</span>
+          </div>
+
+          <button type="submit" id="btn-submit-login" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl text-sm shadow-lg shadow-indigo-600/25 transition-all-fast flex items-center justify-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>Acessar Plataforma</span>
+          </button>
+        </form>
+
+        <!-- Atalhos rápidos para teste de perfis -->
+        <div class="mt-8 pt-6 border-t border-slate-800/80">
+          <p class="text-[11px] text-center font-medium text-slate-400 uppercase tracking-wider mb-3">Atalhos Rápidos de Acesso</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="auth.fillCredentials('ap202do14bis@gmail.com', 'Banana02@')" class="px-3 py-2 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-amber-300 text-xs rounded-xl font-medium transition-all-fast flex flex-col items-center">
+              <span class="font-bold flex items-center gap-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin Master</span>
+              <span class="text-[10px] text-amber-400/70">Corte de Acesso</span>
+            </button>
+            <button onclick="auth.fillCredentials('aluno@concurso.com', 'Aluno123@')" class="px-3 py-2 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 text-indigo-300 text-xs rounded-xl font-medium transition-all-fast flex flex-col items-center">
+              <span class="font-bold flex items-center gap-1"><i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Aluno Demo</span>
+              <span class="text-[10px] text-indigo-400/70">Caderno & Simulados</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TELA DE REGULARIZAÇÃO DA LICENÇA (Corte Total de Acesso) -->
+    <section id="view-license-blocked" class="hidden min-h-[75vh] flex items-center justify-center p-4">
+      <div class="w-full max-w-lg glass-card p-8 sm:p-10 rounded-3xl shadow-2xl border border-rose-500/30 text-center">
+        <div class="w-20 h-20 mx-auto rounded-3xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-6 shadow-xl shadow-rose-500/10">
+          <i data-lucide="shield-x" class="w-10 h-10"></i>
+        </div>
+
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30 mb-3">
+          Acesso Suspenso
+        </span>
+
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Licença Bloqueada</h2>
+        
+        <p class="text-sm text-slate-300 mt-3 leading-relaxed">
+          Seu acesso aos cadernos de questões, simulados e estatísticas de desempenho foi <strong class="text-rose-400">temporariamente cortado pela administração</strong>.
+        </p>
+
+        <div class="my-6 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-left text-xs space-y-2 text-slate-400">
+          <p class="flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0"></i> A regularização restaura instantaneamente todo o seu progresso anterior.</p>
+          <p class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-slate-500 shrink-0"></i> Suas respostas e dados do simulado permanecem protegidos.</p>
+        </div>
+
+        <!-- Botão WhatsApp de Regularização Imediata -->
+        <a id="btn-whatsapp-regularizar" href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20regularizar%20minha%20licença%20de%20acesso%20à%20plataforma%20de%20concursos." target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-xl shadow-emerald-600/30 transition-all-fast flex items-center justify-center gap-3">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          <span>Falar com Administração via WhatsApp</span>
+        </a>
+
+        <div class="mt-4">
+          <button onclick="auth.logout()" class="text-xs text-slate-400 hover:text-white transition-all-fast underline">
+            Sair e entrar com outra conta
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. VIEW: CADERNO DE QUESTÕES INTERATIVO -->
+    <section id="view-caderno" class="hidden space-y-6">
+      
+      <!-- Mini-Dashboard de Progresso em Tempo Real -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="glass-card p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-semibold uppercase text-slate-400">Total Feitas</span>
+            <p id="caderno-stat-feitas" class="text-xl font-bold text-white mt-0.5">0</p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center">
+            <i data-lucide="check-square" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 rounded-2xl border border-emerald-500/20 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-semibold uppercase text-emerald-400">Acertos</span>
+            <p id="caderno-stat-acertos" class="text-xl font-bold text-emerald-400 mt-0.5">0 <span id="caderno-stat-taxa" class="text-xs text-emerald-400/80 font-medium">(0%)</span></p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="check" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 rounded-2xl border border-rose-500/20 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-semibold uppercase text-rose-400">Erros</span>
+            <p id="caderno-stat-erros" class="text-xl font-bold text-rose-400 mt-0.5">0</p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-semibold uppercase text-indigo-400">Restantes</span>
+            <p id="caderno-stat-restantes" class="text-xl font-bold text-indigo-300 mt-0.5">0</p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="layers" class="w-5 h-5"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra Superior de Filtros e Busca -->
+      <div class="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="book-open-check" class="w-6 h-6 text-indigo-400"></i>
+              Caderno de Questões do Edital
+            </h2>
+            <p class="text-xs text-slate-400">Filtrado estritamente pelas matérias exigidas para o cargo.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span id="caderno-total-count">0</span> Questões Disponíveis
+            </span>
+            <button onclick="caderno.abrirModalUploadEdital()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition-all-fast flex items-center gap-1.5">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+              <span>Trocar Edital</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtros em Linha -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-slate-800/80">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Banca Organizadora</label>
+            <select id="filtro-banca" onchange="caderno.carregarQuestoes()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="todas">Todas as Bancas</option>
+              <option value="IBGP">IBGP</option>
+              <option value="FGV">FGV</option>
+              <option value="CESGRANRIO">CESGRANRIO</option>
+              <option value="FUNDATEC">FUNDATEC</option>
+              <option value="COPESE">COPESE</option>
+              <option value="FAFIPA">FAFIPA</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Disciplina</label>
+            <select id="filtro-disciplina" onchange="caderno.carregarQuestoes()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="todas">Todas as Disciplinas</option>
+              <option value="Língua Portuguesa">Língua Portuguesa</option>
+              <option value="Raciocínio Lógico">Raciocínio Lógico & Matemática</option>
+              <option value="Informática">Noções de Informática</option>
+              <option value="Direito Administrativo">Direito Administrativo</option>
+              <option value="Conhecimentos Específicos">Conhecimentos Específicos</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Status da Questão</label>
+            <select id="filtro-status" onchange="caderno.carregarQuestoes()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="todas">Todas</option>
+              <option value="pendentes">Apenas Não Respondidas</option>
+              <option value="resolvidas">Apenas Já Resolvidas</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Buscar por Palavra-Chave</label>
+            <div class="relative">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5"></i>
+              <input type="text" id="filtro-busca" onkeyup="caderno.debounceBusca()" placeholder="Ex: crase, licitação..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-8 pr-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Questões -->
+      <div id="caderno-questoes-container" class="space-y-4">
+        <!-- Renderizado dinamicamente pelo JS -->
+      </div>
+    </section>
+
+    <!-- VIEW: MEU DESEMPENHO E ESTATÍSTICAS -->
+    <section id="view-desempenho" class="hidden space-y-6">
+      <div class="glass-card p-6 sm:p-8 rounded-3xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-2">
+            Métricas de Evolução
+          </span>
+          <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="w-7 h-7 text-emerald-400"></i>
+            Painel Geral de Desempenho
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Totalização de acertos, erros, cobertura do edital e taxa de assertividade por matéria.</p>
+        </div>
+
+        <button onclick="desempenho.carregar()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition-all-fast flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          <span>Atualizar Estatísticas</span>
+        </button>
+      </div>
+
+      <!-- 4 Grandes Cards de Métricas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-card p-6 rounded-2xl border border-slate-800">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase text-slate-400">Total de Questões Feitas</span>
+            <div class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center">
+              <i data-lucide="check-square" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <h3 id="dash-total-feitas" class="text-3xl font-extrabold text-white mt-2">0</h3>
+          <p class="text-[11px] text-slate-500 mt-1">Caderno de estudos + simulados</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-emerald-500/20">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase text-emerald-400">Total de Acertos</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2 mt-2">
+            <h3 id="dash-total-acertos" class="text-3xl font-extrabold text-emerald-400">0</h3>
+            <span id="dash-taxa-acerto" class="text-sm font-bold text-emerald-400/90">(0%)</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Taxa geral de assertividade</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-rose-500/20">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase text-rose-400">Total de Erros</span>
+            <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <h3 id="dash-total-erros" class="text-3xl font-extrabold text-rose-400 mt-2">0</h3>
+          <p class="text-[11px] text-rose-400/70 mt-1">
+            <a href="javascript:void(0)" onclick="router.navigate('erros')" class="hover:underline flex items-center gap-1">
+              <span>Revisar no Caderno de Erros</span>
+              <i data-lucide="arrow-right" class="w-3 h-3"></i>
+            </a>
+          </p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-indigo-500/20">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase text-indigo-400">Restantes no Edital</span>
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+              <i data-lucide="layers" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2 mt-2">
+            <h3 id="dash-total-restantes" class="text-3xl font-extrabold text-indigo-300">0</h3>
+            <span id="dash-total-edital" class="text-xs text-slate-400 font-semibold">de 0 no edital</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Ainda não respondidas</p>
+        </div>
+      </div>
+
+      <!-- Desempenho por Disciplina -->
+      <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-400"></i>
+          Aproveitamento Detalhado por Disciplina
+        </h3>
+        <div id="dash-disciplinas-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Renderizado dinamicamente -->
+        </div>
+      </div>
+
+      <!-- Tabela de Histórico de Resoluções Recentes -->
+      <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden space-y-3">
+        <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="history" class="w-4 h-4 text-slate-400"></i>
+            Histórico das Últimas Questões Resolvidas
+          </h3>
+          <span class="text-xs text-slate-500">Atualizado em tempo real</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900/80 text-slate-400 uppercase font-semibold border-b border-slate-800">
+              <tr>
+                <th class="p-3.5">Questão</th>
+                <th class="p-3.5">Disciplina & Tópico</th>
+                <th class="p-3.5">Origem</th>
+                <th class="p-3.5">Você Marcou</th>
+                <th class="p-3.5">Gabarito</th>
+                <th class="p-3.5 text-right">Resultado</th>
+              </tr>
+            </thead>
+            <tbody id="dash-tabela-atividades" class="divide-y divide-slate-800/80 text-slate-300">
+              <!-- Renderizado dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VIEW: CICLO DE SIMULADOS -->
+    <section id="view-simulados" class="hidden space-y-6">
+      
+      <!-- Painel de Início do Simulado -->
+      <div id="simulado-setup-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Cartão de Configuração e Agendamento -->
+        <div class="lg:col-span-2 glass-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-2">
+              Modo Prova Oficial
+            </span>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Ciclo de Simulados Periódicos</h2>
+            <p class="text-sm text-slate-400 mt-1">Treine sob condições reais de prova com cronômetro regressivo e seleção de questões inéditas.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+              <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i> Dia da Semana Preferido
+              </label>
+              <select id="simulado-dia-semana" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                <option value="Domingo" selected>Domingo (Recomendado)</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Segunda-feira">Segunda-feira</option>
+                <option value="Quarta-feira">Quarta-feira</option>
+              </select>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+              <label class="block text-xs font-semibold uppercase text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <i data-lucide="list-ordered" class="w-4 h-4 text-emerald-400"></i> Quantidade de Questões
+              </label>
+              <select id="simulado-qtd-questoes" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                <option value="20">20 Questões (Simulado Rápido - 60 min)</option>
+                <option value="30" selected>30 Questões (Padrão IBGP/FGV - 90 min)</option>
+                <option value="40">40 Questões (Prova Intermediária - 120 min)</option>
+                <option value="50">50 Questões (Simulado Completo - 180 min)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filtro de Inéditas -->
+          <div class="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 flex items-start gap-3">
+            <input type="checkbox" id="simulado-apenas-ineditas" checked class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
+            <div>
+              <label for="simulado-apenas-ineditas" class="text-xs font-bold text-indigo-200 cursor-pointer">
+                Priorizar Questões Inéditas (Nunca Vistas)
+              </label>
+              <p class="text-[11px] text-indigo-300/70 mt-0.5">
+                O motor seleciona apenas questões do seu edital que você ainda não respondeu, simulando com fidelidade o dia da sua prova real.
+              </p>
+            </div>
+          </div>
+
+          <button onclick="simulados.iniciarSimulado()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold py-4 px-6 rounded-2xl text-sm shadow-xl shadow-amber-500/20 transition-all-fast flex items-center justify-center gap-2">
+            <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+            <span>Iniciar Simulado Geral Agora</span>
+          </button>
+        </div>
+
+        <!-- Estatísticas do Ciclo & Histórico Rápido -->
+        <div class="glass-card p-6 rounded-3xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-5 h-5 text-indigo-400"></i>
+              Evolução nos Simulados
+            </h3>
+            
+            <div class="space-y-3">
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center">
+                <span class="text-xs text-slate-400">Simulados Realizados</span>
+                <span id="stat-total-simulados" class="text-sm font-bold text-white">0</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center">
+                <span class="text-xs text-slate-400">Média Geral de Acertos</span>
+                <span id="stat-media-simulados" class="text-sm font-bold text-amber-400">0%</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center">
+                <span class="text-xs text-slate-400">Acertos no Caderno Diário</span>
+                <span id="stat-taxa-geral" class="text-sm font-bold text-emerald-400">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800">
+            <button onclick="simulados.verHistoricoCompleto()" class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 font-medium border border-slate-800 transition-all-fast flex items-center justify-center gap-2">
+              <i data-lucide="history" class="w-4 h-4"></i>
+              <span>Ver Histórico de Tentativas</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TELA DO SIMULADO ATIVO (EM EXECUÇÃO) -->
+      <div id="simulado-ativo-container" class="hidden space-y-6">
+        <!-- Top bar com cronômetro flutuante -->
+        <div class="glass-card p-4 rounded-2xl border border-slate-800 sticky top-20 z-30 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+          <div>
+            <h3 id="simulado-ativo-titulo" class="text-sm font-bold text-white">Simulado Geral em Andamento</h3>
+            <p class="text-[11px] text-slate-400">Responda todas as questões antes de entregar.</p>
+          </div>
+
+          <!-- Cronômetro Regressivo -->
+          <div class="flex items-center gap-3 bg-slate-900 px-4 py-2 rounded-xl border border-slate-800">
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+            <span class="text-xs text-slate-400 uppercase font-semibold">Tempo Restante:</span>
+            <span id="simulado-timer-display" class="font-mono text-base font-bold text-amber-400">02:00:00</span>
+          </div>
+
+          <button onclick="simulados.confirmarFinalizacao()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-5 rounded-xl text-xs transition-all-fast flex items-center gap-2 shadow-lg shadow-emerald-600/20">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Finalizar & Entregar Prova</span>
+          </button>
+        </div>
+
+        <!-- Paleta de Navegação Rápida -->
+        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+          <p class="text-xs font-semibold text-slate-400 mb-2">Gabarito Rápido / Navegação:</p>
+          <div id="simulado-paleta-questoes" class="flex flex-wrap gap-1.5">
+            <!-- Botões 1 a N -->
+          </div>
+        </div>
+
+        <!-- Lista de Questões do Simulado -->
+        <div id="simulado-questoes-lista" class="space-y-6">
+          <!-- Renderizado dinamicamente -->
+        </div>
+      </div>
+
+      <!-- RELATÓRIO / BOLETIM PÓS-SIMULADO -->
+      <div id="simulado-resultado-container" class="hidden space-y-6">
+        <!-- Renderizado dinamicamente -->
+      </div>
+
+    </section>
+
+    <!-- 5. VIEW: CADERNO DE ERROS -->
+    <section id="view-erros" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30 mb-2">
+            Revisão Estratégica
+          </span>
+          <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-6 h-6 text-rose-400"></i>
+            Caderno de Erros Inteligente
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Aqui estão todas as questões que você errou no Caderno ou nos Simulados. Refaça até dominar os tópicos fracos!
+          </p>
+        </div>
+        <div class="text-right">
+          <span id="erros-total-badge" class="px-3.5 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-500/30">
+            0 Questões para Revisar
+          </span>
+        </div>
+      </div>
+
+      <div id="erros-questoes-container" class="space-y-4">
+        <!-- Questões de erro renderizadas aqui -->
+      </div>
+    </section>
+
+    <!-- 6. VIEW: RAIO-X DO EDITAL -->
+    <section id="view-raio-x" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800">
+        <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+          <i data-lucide="activity" class="w-6 h-6 text-sky-400"></i>
+          Raio-X de Mapeamento do Edital
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">
+          Distribuição exata das questões catalogadas no banco em cada tópico e disciplina do seu edital.
+        </p>
+      </div>
+
+      <div id="raio-x-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Cards por disciplina e tópicos -->
+      </div>
+    </section>
+
+    <!-- 7. VIEW: FORA DO EDITAL (Transparência de Filtro) -->
+    <section id="view-fora-edital" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/20 text-orange-300 border border-orange-500/30 mb-2">
+          Filtro Estrito em 3 Camadas
+        </span>
+        <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+          <i data-lucide="filter-x" class="w-6 h-6 text-orange-400"></i>
+          Questões Descartadas (Fora do Edital)
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">
+          Garantia de que você não perde tempo estudando matérias inexistentes no seu edital ou leis municipais restritas a outras cidades.
+        </p>
+      </div>
+
+      <div id="fora-edital-lista-container" class="space-y-3">
+        <!-- Lista com motivo do descarte -->
+      </div>
+    </section>
+
+    <!-- 8. VIEW: PAINEL ADMINISTRATIVO (Gestão de Alunos & Corte de Acesso) -->
+    <section id="view-admin" class="hidden space-y-6">
+      <!-- Header do Painel Admin -->
+      <div class="glass-card p-6 rounded-3xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-2">
+            Administração Master
+          </span>
+          <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <i data-lucide="users" class="w-7 h-7 text-amber-400"></i>
+            Gestão de Alunos e Corte de Acesso
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Crie novos logins, controle licenças e realize cortes ou reativações imediatas de acesso.</p>
+        </div>
+
+        <button onclick="admin.abrirModalNovoAluno()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-xs transition-all-fast flex items-center gap-2 shadow-lg shadow-amber-500/20">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Cadastrar Novo Aluno</span>
+        </button>
+      </div>
+
+      <!-- Métricas dos Alunos -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="glass-card p-5 rounded-2xl border border-slate-800">
+          <p class="text-xs text-slate-400 font-semibold uppercase">Total de Usuários</p>
+          <h3 id="admin-total-users" class="text-2xl font-bold text-white mt-1">0</h3>
+        </div>
+        <div class="glass-card p-5 rounded-2xl border border-emerald-500/20">
+          <p class="text-xs text-emerald-400 font-semibold uppercase">Licenças Ativas</p>
+          <h3 id="admin-active-users" class="text-2xl font-bold text-emerald-400 mt-1">0</h3>
+        </div>
+        <div class="glass-card p-5 rounded-2xl border border-rose-500/20">
+          <p class="text-xs text-rose-400 font-semibold uppercase">Licenças Cortadas / Bloqueadas</p>
+          <h3 id="admin-blocked-users" class="text-2xl font-bold text-rose-400 mt-1">0</h3>
+        </div>
+      </div>
+
+      <!-- Tabela de Alunos -->
+      <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+        <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+          <h3 class="text-sm font-bold text-slate-200">Alunos e Licenças Cadastradas</h3>
+          <span class="text-xs text-slate-500">Ação de corte tem efeito imediato</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900/80 text-slate-400 uppercase font-semibold border-b border-slate-800">
+              <tr>
+                <th class="p-3.5">Nome</th>
+                <th class="p-3.5">E-mail</th>
+                <th class="p-3.5">Contato / WhatsApp</th>
+                <th class="p-3.5">Perfil</th>
+                <th class="p-3.5">Status da Licença</th>
+                <th class="p-3.5 text-right">Ação de Corte / Controle</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tabela-usuarios" class="divide-y divide-slate-800/80 text-slate-300">
+              <!-- Linhas preenchidas dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODAL: NOVO ALUNO ==================== -->
+  <div id="modal-novo-aluno" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card p-6 sm:p-8 rounded-3xl max-w-md w-full border border-slate-700 shadow-2xl space-y-5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-5 h-5 text-amber-400"></i>
+          Cadastrar Novo Aluno
+        </h3>
+        <button onclick="admin.fecharModalNovoAluno()" class="p-1 rounded-lg text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="admin.salvarNovoAluno(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Nome Completo</label>
+          <input type="text" id="novo-nome" required placeholder="Ex: Roberto Silva" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">E-mail de Acesso</label>
+          <input type="email" id="novo-email" required placeholder="roberto@email.com" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Senha de Acesso</label>
+          <input type="password" id="novo-senha" required placeholder="Mínimo 6 dígitos" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Telefone / WhatsApp de Contato</label>
+          <input type="text" id="novo-telefone" placeholder="(11) 98765-4321" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Status Inicial da Licença</label>
+          <select id="novo-status" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white">
+            <option value="ativo" selected>Ativo (Acesso Liberado)</option>
+            <option value="bloqueado">Bloqueado / Cortado</option>
+          </select>
+        </div>
+
+        <div class="pt-3 flex gap-2">
+          <button type="button" onclick="admin.fecharModalNovoAluno()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-all-fast">
+            Cancelar
+          </button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition-all-fast">
+            Salvar Aluno
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: UPLOAD DE EDITAL ==================== -->
+  <div id="modal-upload-edital" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card p-6 sm:p-8 rounded-3xl max-w-lg w-full border border-slate-700 shadow-2xl space-y-5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="file-up" class="w-5 h-5 text-indigo-400"></i>
+          Subir Edital em PDF
+        </h3>
+        <button onclick="caderno.fecharModalUploadEdital()" class="p-1 rounded-lg text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="caderno.submeterEdital(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Cargo Desejado</label>
+          <input type="text" id="upload-cargo" required value="Assistente Administrativo" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Órgão / Município</label>
+          <input type="text" id="upload-orgao" required value="Prefeitura Municipal" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold uppercase text-slate-400 mb-1">Arquivo PDF do Edital</label>
+          <input type="file" id="upload-file" accept="application/pdf" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
+        </div>
+
+        <div class="pt-2 flex gap-2">
+          <button type="button" onclick="caderno.fecharModalUploadEdital()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-all-fast">
+            Cancelar
+          </button>
+          <button type="submit" id="btn-processar-edital" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all-fast flex items-center justify-center gap-2">
+            <i data-lucide="scan" class="w-4 h-4"></i>
+            <span>Processar com IA</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
